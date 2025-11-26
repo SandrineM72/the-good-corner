@@ -1,0 +1,30 @@
+{
+  "name": "the-good-corner",
+  "version": "1.0.0",
+  "description": "Ads app",
+  "keywords": [
+    "ads"
+  ],
+  "homepage": "https://github.com/SandrineM72/the-good-corner#readme",
+  "bugs": {
+    "url": "https://github.com/SandrineM72/the-good-corner/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SandrineM72/the-good-corner.git"
+  },
+  "license": "ISC",
+  "author": "SandrineM72",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node-dev ./src/index.ts"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "ts-node-dev": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5"
+  }
+}
