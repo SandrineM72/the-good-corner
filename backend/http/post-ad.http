@@ -1,8 +1,3 @@
-GET http://localhost:3000/ads
-
-
-###
-
 POST http://localhost:3000/ads
 Content-Type: application/json
 
@@ -12,5 +7,4 @@ Content-Type: application/json
     "description": "Etat neuf",
     "owner": "Open fans '72",
     "price": 8000,
-    "picture": "https://share.google/images/Pq4XD3KltL7IhAYAZ"
-}
+    "picture": "https://share.google/images/Pq4XD3KltL7IhAYAZ"}

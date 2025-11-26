@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 const port = 3000;
 
-const ads = [
+let ads = [
   {
     id: 1,
     title: "Bike to sell",
@@ -33,7 +33,6 @@ const ads = [
 
 
 
-
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -47,6 +46,22 @@ app.post("/ads", (req, res) => {
   res.send("Request received, check the backend terminal");
 });
 
+app.delete('/ads/:id', (req, res) => {
+  const adId = parseInt(req.params.id)
+  const adToDelete = ads.find(ad => ad.id === adId)
+  if (!adToDelete) return res.sendStatus(404)
+  ads = ads.filter(ad => ad.id !== adToDelete.id)
+  res.send("ad deleted");
+})
+
+app.patch('/ads/:id', (req, res) => {
+  const adId = parseInt(req.params.id)
+  const adToUpdate = ads.find(ad => ad.id === adId)
+  if (!adToUpdate) return res.sendStatus(404)
+  const newProps = req.body
+  Object.assign(adToUpdate, newProps)
+  res.send("ad updated");
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
