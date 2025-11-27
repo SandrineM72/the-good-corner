@@ -2,9 +2,6 @@ POST http://localhost:3000/ads
 Content-Type: application/json
 
 {
-    "id": 4,
-    "title": "Opel Corsa 1995",
-    "description": "Etat neuf",
-    "owner": "Open fans '72",
-    "price": 8000,
-    "picture": "https://share.google/images/Pq4XD3KltL7IhAYAZ"}
+    "title": "test2",
+    "price": "150"
+}

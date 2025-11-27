@@ -1,67 +1,132 @@
 import express from "express";
+import sqlite from "sqlite3";
 
 const app = express();
 app.use(express.json());
 const port = 3000;
-
-let ads = [
-  {
-    id: 1,
-    title: "Bike to sell",
-    description:
-      "My bike is blue, working fine. I'm selling it because I've got a new one",
-    owner: "bike.seller@gmail.com",
-    price: 100,
-    picture:
-      "https://images.lecho.be/view?iid=dc:113129565&context=ONLINE&ratio=16/9&width=640&u=1508242455000",
-    location: "Paris",
-    createdAt: "2023-09-05T10:13:14.755Z",
-  },
-  {
-    id: 2,
-    title: "Car to sell",
-    description:
-      "My car is blue, working fine. I'm selling it because I've got a new one",
-    owner: "car.seller@gmail.com",
-    price: 10000,
-    picture:
-      "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
-    location: "Paris",
-    createdAt: "2023-10-05T10:14:15.922Z",
-  },
-];
+const db = new sqlite.Database('db.sqlite');
 
 
+// let ads = [
+//   {
+//     id: 1,
+//     title: "Bike to sell",
+//     description:
+//       "My bike is blue, working fine. I'm selling it because I've got a new one",
+//     owner: "bike.seller@gmail.com",
+//     price: 100,
+//     picture:
+//       "https://images.lecho.be/view?iid=dc:113129565&context=ONLINE&ratio=16/9&width=640&u=1508242455000",
+//     location: "Paris",
+//     createdAt: "2023-09-05T10:13:14.755Z",
+//   },
+//   {
+//     id: 2,
+//     title: "Car to sell",
+//     description:
+//       "My car is blue, working fine. I'm selling it because I've got a new one",
+//     owner: "car.seller@gmail.com",
+//     price: 10000,
+//     picture:
+//       "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
+//     location: "Paris",
+//     createdAt: "2023-10-05T10:14:15.922Z",
+//   },
+// ];
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello World!");
+// });
 
-app.get("/ads", (req, res) => {
-  res.send(ads);
-});
+// app.get("/ads", (req, res) => {
+//   res.send(ads);
+// });
+
+app.get ("/ads", (req, res) => {
+  db.all("SELECT * FROM ads", (err, rows) => {
+      if (err) {
+        return res.send(500)
+      }
+      console.log("ok");
+      res.send(rows);
+    },
+
+  )});
+
+
+// app.post("/ads", (req, res) => {
+//   ads.push(req.body);
+//   res.send("Request received, check the backend terminal");
+// });
 
 app.post("/ads", (req, res) => {
-  ads.push(req.body);
-  res.send("Request received, check the backend terminal");
-});
-
-app.delete('/ads/:id', (req, res) => {
-  const adId = parseInt(req.params.id)
-  const adToDelete = ads.find(ad => ad.id === adId)
-  if (!adToDelete) return res.sendStatus(404)
-  ads = ads.filter(ad => ad.id !== adToDelete.id)
-  res.send("ad deleted");
+  db.run("INSERT INTO ads (title,price) VALUES ($title, $price)", {
+    $title: req.body.title,
+    $price: req.body.price
+  }, (err) => {
+    if (err) {
+      return res.send(500)
+    }
+      console.log("ok");
+      res.send("OK");
+  })
 })
 
-app.patch('/ads/:id', (req, res) => {
-  const adId = parseInt(req.params.id)
-  const adToUpdate = ads.find(ad => ad.id === adId)
-  if (!adToUpdate) return res.sendStatus(404)
-  const newProps = req.body
-  Object.assign(adToUpdate, newProps)
-  res.send("ad updated");
+// app.delete('/ads/:id', (req, res) => {
+//   const adId = parseInt(req.params.id)
+//   const adToDelete = ads.find(ad => ad.id === adId)
+//   if (!adToDelete) return res.sendStatus(404)
+//   ads = ads.filter(ad => ad.id !== adToDelete.id)
+//   res.send("ad deleted");
+// })
+// app.delete('/ads/:id', (req, res) => {
+
+
+app.delete("/ads/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  db.run("DELETE FROM ads WHERE id = $id",
+    {
+      $id: id
+    }
+    , (err) => {
+      if (err) {
+      console.log(err);
+      return res.sendStatus(500);
+    }
+
+      res.send("OK");
+  })
 })
+
+
+// app.patch('/ads/:id', (req, res) => {
+//   const adId = parseInt(req.params.id)
+//   const adToUpdate = ads.find(ad => ad.id === adId)
+//   if (!adToUpdate) return res.sendStatus(404)
+//   const newProps = req.body
+//   Object.assign(adToUpdate, newProps)
+//   res.send("ad updated");
+// })
+
+app.patch("/ads/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  db.run("UPDATE FROM ads (id) VALUE ($id)",
+    {
+      $id: id
+    }
+        , (err) => {
+      if (err) {
+      console.log(err);
+      return res.sendStatus(500);
+    }
+
+      res.send("OK");
+  }
+
+  )
+})
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
