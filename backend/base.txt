@@ -1,0 +1,37 @@
+CREATE TABLE adscategory(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    categoryname VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE ads(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR(100) NOT NULL,
+    price REAL NOT NULL,
+    picture VARCHAR(255),
+    city VARCHAR(100) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    creationdate DATE DEFAULT CURRENT_DATE,
+    category_id INT NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES adscategory(id)
+);
+
+CREATE TABLE tag(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(50) NOT NULL
+);
+
+
+INSERT INTO ads (title, price, picture, city, description, category_id) VALUES 
+('RENAULT 5', 2000, 'R5.jpg', 'Paris 12', 'Excellent état, 1995', 1),
+('RENAULT 19', 1000, NULL, 'Paris 10', 'Très bon état, 1996', 1),
+('PEUGEOT 205', 2500, NULL, 'Paris 09', 'Excellent état, 1992', 1),
+('FORD FIESTA', 500, NULL, 'Paris 20', 'Pour pièces, 1990', 1),
+('RENAULT TWINGO', 3000, NULL, 'Paris 12', 'Excellent état, 1995', 1),
+('OPEN CORSA', 1000, NULL, 'Paris 20', 'Etat moyen, 1991', 1);
+
+
+INSERT INTO adscategory (categoryname) VALUES 
+('Renault vintage'),
+('Peugeot vintage'),
+('Opel vintage'),
+('Ford vintage');

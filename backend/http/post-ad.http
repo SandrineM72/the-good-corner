@@ -2,6 +2,10 @@ POST http://localhost:3000/ads
 Content-Type: application/json
 
 {
-    "title": "test2",
-    "price": "150"
+    "title": "OPEL PRIMERA",
+    "price": 5000,
+    "picture": "primera.jpg",
+    "city": "Nanteuil",
+    "description": "Très bon état",
+    "category_id": 2
 }
