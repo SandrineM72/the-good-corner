@@ -174,9 +174,6 @@ app.delete('/tag/:id', (req, res) => {
 
 /**** REQUETES PATCH POUR MODIFIER 1 ENREGISTREMENT ****/
 
-/**** A TERMINER ****/
-
-
 app.patch('/ads/:id', (req, res) => {
   const id = parseInt(req.params.id, 10)
 
