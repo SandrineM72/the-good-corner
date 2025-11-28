@@ -1,7 +1,7 @@
-PATCH http://localhost:3000/ads/3
+PATCH http://localhost:3000/ads/6
 Content-Type: application/json
 
 {
-    "title": "Bike to give",
-    "price": 0
+    "title": "OPEL CORSA",
+    "price": 1200
 }

@@ -15,9 +15,17 @@ CREATE TABLE ads(
     FOREIGN KEY (category_id) REFERENCES adscategory(id)
 );
 
-CREATE TABLE tag(
+CREATE TABLE tags(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE ads_to_tags (
+    ads_id INTEGER,
+    tags_id INTEGER,
+    FOREIGN KEY (ads_id) REFERENCES ads(id),
+    FOREIGN KEY (tags_id) REFERENCES tags(id),
+    PRIMARY KEY (ads_id, tags_id)
 );
 
 
@@ -35,3 +43,41 @@ INSERT INTO adscategory (categoryname) VALUES
 ('Peugeot vintage'),
 ('Opel vintage'),
 ('Ford vintage');
+
+INSERT INTO tags (name) VALUES
+('CT à vérifier'),
+('Faire offre');
+
+INSERT INTO ads_to_tags (ads_id, tags_id) VALUES
+(1,1),
+(2,2),
+(4,1),
+(5,1),
+(5,2),
+(6,2);
+
+
+
+DROP TABLE ads_to_tags;
+
+SELECT * FROM ads;
+
+# Requête pour récupérer toutes les annonces d'une catégorie
+
+SELECT a.title, c.categoryname AS 'categoryname'
+FROM ads as a 
+JOIN adscategory AS c 
+ON a.category_id = c.id 
+WHERE c.categoryname = 'Renault vintage';
+
+
+# Requête pour afficher toutes les annonces avec leurs nombres de tags
+
+SELECT a.title, count(t.id) as 'nb tags'
+FROM ads AS a
+LEFT JOIN ads_to_tags AS att ON a.id = att.ads_id
+LEFT JOIN TAGS as t ON t.id = att.tags_id
+GROUP BY a.id;
+
+SELECT * FROM ads_to_tags;
+

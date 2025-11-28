@@ -11,6 +11,11 @@ interface Ad {
   id: number
   title: string
   price: number
+  picture: string
+  city: string
+  description: string
+  creationdate: string
+  category_id: number
 }
 
 /**** REQUETES GET ****/
@@ -183,10 +188,17 @@ app.patch('/ads/:id', (req, res) => {
       return res.sendStatus(500)
     }
     if (!adToUpdate) return res.sendStatus(404)
-    db.run('UPDATE ads SET title=$title, price=$price WHERE id = $id', {
+
+    db.run('UPDATE ads SET title=$title, price=$price, picture=$picture, city=$city, description=$description, creationdate=$creationdate, category_id=$category_id WHERE id = $id', {
       $id: id,
       $title: req.body.title || adToUpdate.title,
-      $price: req.body.price || adToUpdate.price
+      $price: req.body.price || adToUpdate.price,
+      $picture: req.body.picture || adToUpdate.picture,
+      $city: req.body.city || adToUpdate.city,
+      $description: req.body.description || adToUpdate.description,
+      $creationdate: req.body.$creationdate || adToUpdate.creationdate,
+      $category_id: req.body.category_id || adToUpdate.category_id
+
     }, (err) => {
       if (err) {
         console.error(err)
